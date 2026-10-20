@@ -336,6 +336,10 @@ footer{padding-top:8px}
 
 
 /* ===== personal model ===== */
+.usp{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:8px}
+.usp li{display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--hero-muted)}
+.usp li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:#8FA8FF;transform:translateY(-1px)}
+.usp b{color:var(--hero-ink);font-weight:600;white-space:nowrap}
 .model{display:flex;flex-direction:column;gap:20px}
 .mgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
 @media (max-width:900px){.mgrid{grid-template-columns:1fr}}
@@ -406,8 +410,9 @@ footer{padding-top:8px}
   <section class="hero" aria-label="Load your data and see your score">
     <div class="hero-l">
       <span class="eyebrow">WHOOP data export analyst</span>
-      <h1>Your recovery, read like a coach would.</h1>
-      <p class="lead">Drop in your export and see what is holding your recovery back, what is working, and what to change first.</p>
+      <h1>Find out what actually moves your recovery.</h1>
+      <p class="lead">Drop in your WHOOP export and get a model built from your own history, plus a coach's read on what to change first.</p>
+      <ul class="usp"><li><b>Your sweet spots</b> sleep and bedtime that work for you</li><li><b>What-if simulator</b> test a change before you make it</li><li><b>Tomorrow's strain target</b> how hard to push, based on your history</li></ul>
       <label class="drop" id="drop" for="file">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.8" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
         <span><strong>Drop your WHOOP export here</strong><span class="s">The .zip, or physiological_cycles.csv with workouts.csv and sleeps.csv</span></span>
