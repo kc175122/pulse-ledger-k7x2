@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><title>Pulse Ledger</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><title>Recovery Lab</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -391,9 +391,9 @@ footer{padding-top:8px}
 <main class="wrap" id="top">
   <header class="topbar">
   <div class="tb-in">
-    <a class="logo" href="#top" aria-label="Pulse Ledger, back to top">
+    <a class="logo" href="#top" aria-label="Recovery Lab, back to top">
       <span class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h5l2.5-6 4 12 2.5-6H22"/></svg></span>
-      <span class="lname">Pulse Ledger</span>
+      <span class="lname">Recovery Lab</span>
     </a>
     <nav class="nav" aria-label="Sections"><a href="#report">Report</a><a href="#model">Your model</a><a href="#compare-sec">Compare</a><a href="#trends">Trends</a><a href="#training">Training</a></nav>
     <div class="tb-r">
@@ -409,7 +409,7 @@ footer{padding-top:8px}
 </header>
   <section class="hero" aria-label="Load your data and see your score">
     <div class="hero-l">
-      <span class="eyebrow">WHOOP data export analyst</span>
+      <span class="eyebrow">Your personal recovery analyst</span>
       <h1>Find out what actually moves your recovery.</h1>
       <p class="lead">Drop in your WHOOP export and get a model built from your own history, plus a coach's read on what to change first.</p>
       <ul class="usp"><li><b>Your sweet spots</b> sleep and bedtime that work for you</li><li><b>What-if simulator</b> test a change before you make it</li><li><b>Tomorrow's strain target</b> how hard to push, based on your history</li></ul>
@@ -432,9 +432,9 @@ footer{padding-top:8px}
     <div class="hero-r">
       <div class="scorecard">
         <div class="sc-top">
-          <div class="ring" id="ring" role="img" aria-label="Pulse score"></div>
+          <div class="ring" id="ring" role="img" aria-label="Lab score"></div>
           <div class="sc-meta">
-            <span class="k">Pulse score</span>
+            <span class="k">Lab score</span>
             <span class="band" id="band"></span>
             <p>Six bars averaged from your own numbers. Separate from WHOOP's scores.</p>
           </div>
@@ -548,7 +548,7 @@ footer{padding-top:8px}
   </section>
 
   <footer>
-    <p>Pulse Ledger is an independent tool and is not affiliated with or endorsed by WHOOP, Inc. WHOOP is a trademark of WHOOP, Inc.</p>
+    <p>Recovery Lab is an independent tool and is not affiliated with or endorsed by WHOOP, Inc. WHOOP is a trademark of WHOOP, Inc.</p>
     <p>For personal information only. This is not medical advice. Talk to a qualified professional about health decisions.</p>
   </footer>
 </main>
@@ -1118,12 +1118,12 @@ function renderCoach(v){
   var a=analyse(v),ring=$('#ring'),bd=$('#band');
   if(a.score==null){
     ring.innerHTML='<svg viewBox="0 0 160 160" aria-hidden="true"><circle class="rg-track" cx="80" cy="80" r="62"/></svg><div class="n"><b>-</b></div>';
-    ring.setAttribute('aria-label','Pulse score not available');
+    ring.setAttribute('aria-label','Lab score not available');
     bd.textContent='';bd.className='band';
   }else{
     var b=bandOf(a.score);
     ring.innerHTML=ringSVG(a.score,b[1])+'<div class="n"><b>'+a.score+'</b><span>of 100</span></div>';
-    ring.setAttribute('aria-label','Pulse score '+a.score+' out of 100, '+b[0]);
+    ring.setAttribute('aria-label','Lab score '+a.score+' out of 100, '+b[0]);
     bd.textContent=b[0];bd.className='band '+b[1];
   }
   $('#pillars').innerHTML=a.pillars.length?a.pillars.map(function(p){
