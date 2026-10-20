@@ -334,6 +334,52 @@ details.find[open] summary::after{transform:rotate(-135deg)}
 #tip{border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.28);padding:8px 11px}
 footer{padding-top:8px}
 
+
+/* ===== personal model ===== */
+.model{display:flex;flex-direction:column;gap:20px}
+.mgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+@media (max-width:900px){.mgrid{grid-template-columns:1fr}}
+.mnote{font-size:13px;color:var(--muted);margin:0}
+.mnote b{color:var(--ink)}
+.sweet{display:grid;gap:18px}
+.sw h3{font:600 14px var(--sans);margin:0 0 4px}
+.sw .best{font:700 22px var(--display);letter-spacing:-.02em;color:var(--accent)}
+.sw .best small{font:400 13px var(--sans);color:var(--muted);letter-spacing:0}
+.bins{display:flex;gap:4px;align-items:flex-end;height:64px;margin-top:10px}
+.bin{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;min-width:0;height:100%}
+.bin i{display:block;width:100%;border-radius:4px 4px 0 0;background:var(--line);min-height:3px}
+.bin.top i{background:var(--accent)}
+.binlab{display:flex;gap:4px;margin-top:4px}
+.binlab span{flex:1;text-align:center;font:400 10.5px var(--mono);color:var(--muted);min-width:0;overflow:hidden}
+.drv{display:grid;gap:14px}
+.dr .dt{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin-bottom:5px}
+.dr .dt b{font-weight:600}
+.dr .dt span{font:500 13px var(--mono)}
+.dr .dt .pos{color:var(--good)} .dr .dt .neg{color:var(--bad)} .dr .dt .nil{color:var(--muted)}
+.dr .dd{font-size:12.5px;color:var(--muted);margin-top:4px}
+.dbar{position:relative;height:9px;border-radius:5px;background:var(--bg)}
+.dbar i{position:absolute;top:0;bottom:0;border-radius:5px}
+.dbar::after{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1.5px;background:var(--muted);opacity:.5}
+.sim{display:grid;gap:18px}
+.sl label{display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:6px}
+.sl label output{font:500 13px var(--mono);color:var(--accent)}
+.sl input[type=range]{width:100%;accent-color:var(--accent)}
+.sl .lim{display:flex;justify-content:space-between;font:400 11px var(--mono);color:var(--muted);margin-top:2px}
+.pred{display:flex;align-items:center;gap:18px;padding:16px;border-radius:12px;background:var(--bg);flex-wrap:wrap}
+.pred .pv{font:700 44px var(--display);letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.pred .pv small{font:500 14px var(--sans);color:var(--muted);letter-spacing:0}
+.pred .pt{flex:1 1 180px;font-size:13px;color:var(--muted)}
+.pred .pt b{color:var(--ink)}
+.zbadge{display:inline-block;padding:2px 9px;border-radius:6px;font:600 12px var(--mono);margin-bottom:4px}
+.zbadge.good{background:color-mix(in srgb,var(--good) 18%,transparent)}
+.zbadge.mid{background:color-mix(in srgb,var(--mid) 24%,transparent)}
+.zbadge.bad{background:color-mix(in srgb,var(--bad) 18%,transparent)}
+.target{display:grid;gap:10px}
+.target .tv{font:700 30px var(--display);letter-spacing:-.03em}
+.target .tv small{font:400 13px var(--sans);color:var(--muted);letter-spacing:0}
+.mlock{padding:18px;border-radius:12px;background:var(--bg);color:var(--muted);font-size:14px}
+.mlock b{color:var(--ink)}
+
 </style>
 
 
@@ -345,7 +391,7 @@ footer{padding-top:8px}
       <span class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h5l2.5-6 4 12 2.5-6H22"/></svg></span>
       <span class="lname">Pulse Ledger</span>
     </a>
-    <nav class="nav" aria-label="Sections"><a href="#report">Report</a><a href="#compare-sec">Compare</a><a href="#trends">Trends</a><a href="#training">Training</a></nav>
+    <nav class="nav" aria-label="Sections"><a href="#report">Report</a><a href="#model">Your model</a><a href="#compare-sec">Compare</a><a href="#trends">Trends</a><a href="#training">Training</a></nav>
     <div class="tb-r">
       <div class="seg" role="group" aria-label="Date range" id="range">
         <button type="button" data-r="30" aria-pressed="false">30d</button>
@@ -417,6 +463,11 @@ footer{padding-top:8px}
         </section>
       </div>
     </div>
+  </section>
+
+  <section class="sec" id="model">
+    <div class="sec-head"><span class="eyebrow">Your model</span><h2>What actually moves <em style="font-style:normal">your</em> recovery</h2><p>Built from your own history, not from averages. It finds your sweet spots, tests changes before you make them, and tells you how hard to push tomorrow.</p></div>
+    <div id="model-body" class="model"></div>
   </section>
 
   <section class="sec" id="compare-sec">
@@ -1115,7 +1166,7 @@ function render(msg,isErr){
   renderStatus(msg,isErr);
   if(!S.days.length)return;
   $('#period').textContent=v.cur.length?dshort(v.cur[0].date)+' to '+dshort(v.cur[v.cur.length-1].date)+' · '+v.cur.length+' days':'';
-  renderStrip(v);renderCoach(v);renderCompare(v);renderCharts(v);renderTables(v);
+  renderStrip(v);renderCoach(v);renderModel();renderCompare(v);renderCharts(v);renderTables(v);
 }
 
 /* ---------- loading files ---------- */
@@ -1165,6 +1216,140 @@ document.addEventListener('pointermove',function(e){
 });
 document.addEventListener('pointerleave',function(){tip.hidden=true});
 
+/* ---------- personal model ---------- */
+var MODEL=null;
+function solve(A,b){
+  var n=b.length,M=A.map(function(r,i){return r.concat([b[i]])},0),i,j,k;
+  for(i=0;i<n;i++){var p=i;for(j=i+1;j<n;j++)if(Math.abs(M[j][i])>Math.abs(M[p][i]))p=j;
+    if(Math.abs(M[p][i])<1e-9)return null;var t=M[i];M[i]=M[p];M[p]=t;
+    for(j=0;j<n;j++){if(j===i)continue;var f=M[j][i]/M[i][i];for(k=i;k<=n;k++)M[j][k]-=f*M[i][k]}}
+  return M.map(function(r,i){return r[n]/r[i]});
+}
+function invert(A){
+  var n=A.length,out=[],c;
+  for(c=0;c<n;c++){var e=[];for(var r=0;r<n;r++)e.push(r===c?1:0);var x=solve(A,e);if(!x)return null;out.push(x)}
+  return out; /* symmetric, so columns = rows */
+}
+function buildModel(){
+  var byDate={};S.days.forEach(function(d){byDate[d.date]=d});
+  function prev(d){return byDate[new Date((dnum(d.date)-1)*DAY).toISOString().slice(0,10)]}
+  function next(d){return byDate[new Date((dnum(d.date)+1)*DAY).toISOString().slice(0,10)]}
+  var rows=[];
+  S.days.forEach(function(d){var p=prev(d);
+    if(d.rec!=null&&d.asleep!=null&&d.bed!=null&&p&&p.strain!=null)rows.push({rec:d.rec,sl:d.asleep/60,bed:d.bed,st:p.strain,date:d.date})});
+  var m={n:rows.length,ok:false,rows:rows};
+  if(rows.length<45){return m}
+  var keys=['sl','bed','st'],mu={},sg={};
+  keys.forEach(function(k){var v=rows.map(function(r){return r[k]});mu[k]=mean(v);sg[k]=sd(v)||1});
+  var X=rows.map(function(r){return [1].concat(keys.map(function(k){return (r[k]-mu[k])/sg[k]}))});
+  var y=rows.map(function(r){return r.rec}),p=4,i,j,k;
+  var XtX=[],Xty=[];
+  for(i=0;i<p;i++){XtX.push([]);Xty.push(0);for(j=0;j<p;j++){var s=0;for(k=0;k<X.length;k++)s+=X[k][i]*X[k][j];XtX[i].push(s)}for(k=0;k<X.length;k++)Xty[i]+=X[k][i]*y[k]}
+  var beta=solve(XtX,Xty),inv=invert(XtX);
+  if(!beta||!inv)return m;
+  var sse=0,sst=0,my=mean(y);
+  X.forEach(function(r,idx){var pr=0;for(i=0;i<p;i++)pr+=r[i]*beta[i];sse+=Math.pow(y[idx]-pr,2);sst+=Math.pow(y[idx]-my,2)});
+  var df=rows.length-p,s2=sse/df;
+  m.ok=true;m.beta=beta;m.mu=mu;m.sg=sg;m.keys=keys;m.r2=sst?1-sse/sst:0;m.se=Math.sqrt(s2);
+  m.t=beta.map(function(b,i){return b/Math.sqrt(s2*inv[i][i])});
+  m.predict=function(sl,bed,st){var z=[(sl-mu.sl)/sg.sl,(bed-mu.bed)/sg.bed,(st-mu.st)/sg.st];return Math.max(1,Math.min(99,beta[0]+beta[1]*z[0]+beta[2]*z[1]+beta[3]*z[2]))};
+  /* sweet spots: binned means */
+  function bins(key,lo,hi,step,fmt){
+    var out=[];for(var a=lo;a<hi;a+=step){var v=rows.filter(function(r){return r[key]>=a&&r[key]<a+step}).map(function(r){return r.rec});
+      out.push({a:a,b:a+step,n:v.length,m:v.length>=5?mean(v):null,lab:fmt(a)})}
+    return out;
+  }
+  var sl=rows.map(function(r){return r.sl}),bd=rows.map(function(r){return r.bed});
+  var slLo=Math.floor(Math.max(4.5,Math.min.apply(null,sl))*2)/2,slHi=Math.min(10.5,Math.ceil(Math.max.apply(null,sl)*2)/2);
+  var bdLo=Math.floor(Math.min.apply(null,bd)/30)*30,bdHi=Math.ceil(Math.max.apply(null,bd)/30)*30;
+  m.slBins=bins('sl',slLo,slHi,0.5,function(a){return String(a)});
+  m.bdBins=bins('bed',bdLo,bdHi,30,function(a){return clk(a)});
+  /* strain target for tomorrow */
+  var all=S.days.filter(function(d){return d.rec!=null}),mAll=mean(all.map(function(d){return d.rec}));
+  var last=null;for(i=S.days.length-1;i>=0;i--){if(S.days[i].rec!=null){last=S.days[i];break}}
+  m.last=last;m.mAll=mAll;
+  if(last){
+    var zn=zone(last.rec),pool=[];
+    S.days.forEach(function(d){var nx=next(d);if(d.rec!=null&&d.strain!=null&&nx&&nx.rec!=null&&Math.abs(d.rec-last.rec)<=12)pool.push({st:d.strain,nr:nx.rec})});
+    var good=pool.filter(function(q){return q.nr>=mAll}),bad=pool.filter(function(q){return q.nr<mAll});
+    m.zone=zn;m.poolN=pool.length;m.goodN=good.length;
+    if(pool.length>=12&&good.length>=4&&bad.length>=4){
+      var gs=good.map(function(q){return q.st}).sort(function(a,b){return a-b});
+      m.tgt=medianOf(gs);m.tgtHi=gs[Math.min(gs.length-1,Math.floor(gs.length*0.75))];m.badMed=medianOf(bad.map(function(q){return q.st}));
+    }
+  }
+  return m;
+}
+function renderModel(){
+  var el=$('#model-body');
+  MODEL=buildModel();var m=MODEL;
+  if(!m.ok){
+    el.innerHTML='<div class="mlock"><b>Your model needs a little more data.</b> It found '+m.n+' usable nights and needs at least 45, with recovery, sleep length, bedtime and the previous day\'s strain for each. Export a longer date range from WHOOP and drop it in again.</div>';return;
+  }
+  var zlab={good:'green',mid:'yellow',bad:'red'};
+  var fit=m.r2>=0.35?'strongly':m.r2>=0.15?'moderately':'only weakly';
+  var html='';
+  /* drivers */
+  var sc=[['Sleep length','sl',1,'per extra '+r1(m.sg.sl)+' h asleep'],['Bedtime','bed',2,'per '+Math.round(m.sg.bed)+' min later'],['Strain the day before','st',3,'per +'+r1(m.sg.st)+' strain']];
+  var maxA=Math.max.apply(null,sc.map(function(s){return Math.abs(m.beta[s[2]])}).concat([5]));
+  var drv=sc.map(function(s){var b=m.beta[s[2]],t=m.t[s[2]],clear=Math.abs(t)>=2,w=Math.min(50,Math.abs(b)/maxA*50);
+    return {s:s,b:b,clear:clear,w:w}}).sort(function(a,b){return Math.abs(b.b)-Math.abs(a.b)});
+  var drvHtml=drv.map(function(d){
+    var cls=!d.clear?'nil':d.b>0?(d.s[1]==='st'?'neg':'pos'):(d.s[1]==='st'?'pos':'neg');
+    /* colour by whether the direction is good for recovery: more sleep good, later bed bad, more strain bad */
+    var good=d.b>0;cls=!d.clear?'nil':good?'pos':'neg';
+    var barCol=!d.clear?'var(--line)':good?'var(--good)':'var(--bad)';
+    var left=d.b>=0?50:50-d.w;
+    return '<div class="dr"><div class="dt"><b>'+d.s[0]+'</b><span class="'+cls+'">'+(d.clear?(d.b>=0?'+':'')+r1(d.b)+' pts':'no clear effect')+'</span></div><div class="dbar"><i style="left:'+left+'%;width:'+d.w+'%;background:'+barCol+'"></i></div><div class="dd">'+(d.clear?'Recovery moves about '+r1(Math.abs(d.b))+' points '+(d.b>=0?'up':'down')+' '+d.s[3]+', holding the other two steady.':'Across your history, this one does not show a reliable link to recovery.')+'</div></div>';
+  }).join('');
+  html+='<div class="mgrid">';
+  /* sweet spots */
+  function bestBin(b){var best=null;b.forEach(function(x){if(x.m!=null&&(!best||x.m>best.m))best=x});return best}
+  function binChart(b,best){var mx=Math.max.apply(null,b.map(function(x){return x.m||0}).concat([1])),mn=Math.min.apply(null,b.filter(function(x){return x.m!=null}).map(function(x){return x.m}).concat([100]));
+    var lo=Math.max(0,mn-12);
+    return '<div class="bins">'+b.map(function(x){var h=x.m==null?0:Math.max(6,(x.m-lo)/(mx-lo||1)*100);return '<div class="bin'+(best&&x.a===best.a?' top':'')+'" data-tip="'+esc(x.m==null?'Too few nights':x.lab+' bin<br>Avg recovery '+r0(x.m)+'%<br>'+x.n+' nights')+'"><i style="height:'+h+'%"></i></div>'}).join('')+'</div><div class="binlab">'+b.map(function(x){return '<span>'+x.lab+'</span>'}).join('')+'</div>'}
+  var bs=bestBin(m.slBins),bb=bestBin(m.bdBins);
+  var sweet='<section class="panel"><div class="panel-head"><div><h2>Your sweet spots</h2><p class="sub">Where your own recovery is highest. Bars need at least 5 nights.</p></div></div><div class="sweet">';
+  sweet+='<div class="sw"><h3>Sleep length</h3>'+(bs?'<div class="best">'+r1(bs.a)+' to '+r1(bs.b)+' h <small>avg recovery '+r0(bs.m)+'%</small></div>':'<p class="mnote">Not enough spread in your sleep length yet.</p>')+binChart(m.slBins,bs)+'<p class="mnote" style="margin-top:6px">Hours asleep, in half-hour bins.</p></div>';
+  sweet+='<div class="sw"><h3>Bedtime</h3>'+(bb?'<div class="best">'+clk(bb.a)+' to '+clk(bb.b)+' <small>avg recovery '+r0(bb.m)+'%</small></div>':'<p class="mnote">Not enough spread in your bedtimes yet.</p>')+binChart(m.bdBins,bb)+'<p class="mnote" style="margin-top:6px">Bedtime, in half-hour bins.</p></div></div></section>';
+  html+=sweet;
+  html+='<section class="panel"><div class="panel-head"><div><h2>What drives your recovery</h2><p class="sub">Ranked by effect size. Grey means no reliable effect.</p></div></div><div class="drv">'+drvHtml+'</div><p class="mnote" style="margin-top:14px">These three factors explain <b>'+Math.round(m.r2*100)+'%</b> of the ups and downs in your recovery, so they shape it '+fit+'. '+(m.r2<0.15?'Stress, alcohol, illness and training load probably matter more for you.':'The rest comes from things this export cannot see, like stress, alcohol and illness.')+'</p></section>';
+  html+='</div><div class="mgrid">';
+  /* simulator */
+  var aSl=mean(m.rows.map(function(r){return r.sl})),aBd=mean(m.rows.map(function(r){return r.bed})),aSt=mean(m.rows.map(function(r){return r.st}));
+  var sMin=Math.floor(Math.min(5,aSl-2)*2)/2,sMax=Math.ceil(Math.max(9.5,aSl+2)*2)/2;
+  var bMin=Math.floor((aBd-150)/15)*15,bMax=Math.ceil((aBd+150)/15)*15;
+  html+='<section class="panel"><div class="panel-head"><div><h2>What-if simulator</h2><p class="sub">Move a slider to see the recovery your history predicts. Starts at your averages.</p></div></div><div class="sim">'+
+    '<div class="sl"><label for="sim-sl">Sleep <output id="o-sl"></output></label><input type="range" id="sim-sl" min="'+sMin+'" max="'+sMax+'" step="0.25" value="'+(Math.round(aSl*4)/4)+'"><div class="lim"><span>'+sMin+' h</span><span>'+sMax+' h</span></div></div>'+
+    '<div class="sl"><label for="sim-bd">Bedtime <output id="o-bd"></output></label><input type="range" id="sim-bd" min="'+bMin+'" max="'+bMax+'" step="15" value="'+(Math.round(aBd/15)*15)+'"><div class="lim"><span>'+clk(bMin)+'</span><span>'+clk(bMax)+'</span></div></div>'+
+    '<div class="sl"><label for="sim-st">Strain the day before <output id="o-st"></output></label><input type="range" id="sim-st" min="4" max="20" step="0.5" value="'+(Math.round(aSt*2)/2)+'"><div class="lim"><span>4</span><span>20</span></div></div>'+
+    '<div class="pred" aria-live="polite"><div class="pv" id="pv"></div><div class="pt" id="pt"></div></div>'+
+    '<p class="mnote">An estimate from patterns in your own history, not a promise. Typical miss is about ±'+Math.round(m.se)+' points. Each slider changes one thing and holds the others where you set them, but sleep and bedtime tend to move together in real life.</p></div></section>';
+  /* target */
+  var tg='<section class="panel"><div class="panel-head"><div><h2>Tomorrow\'s strain target</h2><p class="sub">Based on the days that looked like today for you.</p></div></div><div class="target">';
+  if(m.last){
+    tg+='<p class="mnote">Your latest recovery is <b>'+m.last.rec+'%</b> ('+zlab[m.zone]+') on '+dshort(m.last.date)+'.</p>';
+    if(m.tgt!=null){
+      tg+='<div class="tv">'+r1(Math.max(0,m.tgt-1))+' to '+r1(m.tgtHi)+' <small>strain</small></div>'+
+        '<p class="mnote">On days like this (recovery within 12 points of today), you stayed above your average recovery the next morning when strain was around <b>'+r1(m.tgt)+'</b>, with <b>'+r1(m.tgtHi)+'</b> as the ceiling. When the next day came out below average, strain had typically been about <b>'+r1(m.badMed)+'</b>. Based on '+m.poolN+' similar days.</p>';
+    }else tg+='<p class="mnote">There are only '+m.poolN+' days like this in your history (recovery within 12 points of today), which is too few to set a target. It will appear once you have more data.</p>';
+  }else tg+='<p class="mnote">No recovery scores found.</p>';
+  tg+='</div></section>';
+  html+=tg+'</div>';
+  el.innerHTML=html;
+  ['#sim-sl','#sim-bd','#sim-st'].forEach(function(id){$(id).addEventListener('input',updateSim)});
+  updateSim();
+}
+function updateSim(){
+  var m=MODEL;if(!m||!m.ok||!$('#sim-sl'))return;
+  var sl=+$('#sim-sl').value,bd=+$('#sim-bd').value,st=+$('#sim-st').value;
+  $('#o-sl').textContent=hm(sl*60);$('#o-bd').textContent=clk(bd);$('#o-st').textContent=r1(st);
+  var p=m.predict(sl,bd,st),z=zone(Math.round(p)),zl={good:'Green',mid:'Yellow',bad:'Red'},lo=Math.max(0,p-m.se),hi=Math.min(100,p+m.se);
+  var base=m.predict(Math.round(mean(m.rows.map(function(r){return r.sl}))*4)/4,Math.round(mean(m.rows.map(function(r){return r.bed}))/15)*15,Math.round(mean(m.rows.map(function(r){return r.st}))*2)/2),df=p-base;
+  $('#pv').innerHTML=Math.round(p)+'<small>% recovery</small>';
+  $('#pt').innerHTML='<span class="zbadge '+z+'">'+zl[z]+' zone</span><br>Likely range <b>'+Math.round(lo)+' to '+Math.round(hi)+'%</b>.<br>'+(Math.abs(df)<1?'About the same as your usual.':'<b>'+(df>0?'+':'')+Math.round(df)+' points</b> vs your usual setup.');
+}
+
 /* ---------- theme toggle and section highlight ---------- */
 var root=document.documentElement,tbtn=$('#theme');
 var MOON='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
@@ -1177,7 +1362,7 @@ tbtn.addEventListener('click',function(){var n=curTheme()==='dark'?'light':'dark
 if('IntersectionObserver' in window){
   var links=document.querySelectorAll('.nav a');
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){Array.prototype.forEach.call(links,function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'-25% 0px -65% 0px'});
-  ['report','compare-sec','trends','training'].forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el)});
+  ['report','model','compare-sec','trends','training'].forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el)});
 }
 
 /* ---------- profile (optional, kept in this browser if allowed) ---------- */
